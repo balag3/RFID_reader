@@ -36,17 +36,19 @@ class Device():
             print("Press Control + c to quit.")
             for event in device.read_loop():
                     # enter into an endeless read-loop
-                    if event.type == ecodes.EV_KEY and event.value == 1 and event.code <= 11:
-                        # filter the input coming from the device and append to our container
-                        digit = evdev.ecodes.KEY[event.code].strip("KEY_")
-                        container.append(digit)
-                    if len(container) == 10:
-                        # create and dump the ten digit rfid tag for further use
-                        tag = "".join(i for i in container)
-                        print(tag)
-                        container = []
+                    if event.type == ecodes.EV_KEY and event.value == 1 :
+                        digit = evdev.ecodes.KEY[event.code]
+                        if digit == 'KEY_ENTER':
+                            # create and dump the tag
+                            tag = "".join(i.strip('KEY_') for i in container)
+                            print(tag)
+                            container = []
+                        else:
+                            container.append(digit)
 
         except:
             # catch all exceptions to be able release the device
             device.ungrab()
             print('Quitting.')
+
+Device.run()
