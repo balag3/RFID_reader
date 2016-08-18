@@ -30,13 +30,13 @@ class Device():
         device = cls.connect()
         container = []
         try:
-            # bind the device to the script
             device.grab()
+            # bind the device to the script
             print("RFID scanner is ready....")
             print("Press Control + c to quit.")
             for event in device.read_loop():
                     # enter into an endeless read-loop
-                    if event.type == ecodes.EV_KEY and event.value == 1 :
+                    if event.type == ecodes.EV_KEY and event.value == 1:
                         digit = evdev.ecodes.KEY[event.code]
                         if digit == 'KEY_ENTER':
                             # create and dump the tag
